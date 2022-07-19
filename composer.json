@@ -13,5 +13,10 @@
             "name": "alxishin",
             "email": "alxishin@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Page\\": "src/"
+        }
+    },
 }
