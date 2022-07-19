@@ -31,5 +31,7 @@ class PageExtension extends Extension
 		$container->registerForAutoconfiguration(BlockInterface::class)
 			->addTag('page.block_service')
 		;
+
+
 	}
 }

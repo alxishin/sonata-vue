@@ -17,3 +17,8 @@ services:
   Page\Type\MapType:
     arguments:
       - !tagged_iterator page.block_service
+  Page\Service\:
+      resource: '../../Service/'
+  Page\Controller\:
+      resource: '../../Controller/'
+
