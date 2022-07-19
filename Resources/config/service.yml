@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+  admin.page:
+    class: Page\Admin\PageAdmin
+    tags:
+      - { name: sonata.admin, model_class: Page\Entity\Page, controller: Page\Controller\PageAdminController, manager_type: orm, group: admin, label: Page }
+  admin.page_template:
+    class: Page\Admin\PageTemplateAdmin
+    tags:
+      - { name: sonata.admin, model_class: Page\Entity\PageTemplate, controller: ~, manager_type: orm, group: admin, label: PageTemplate }
+  admin.site:
+    class: Page\Admin\SiteAdmin
+    tags:
+      - { name: sonata.admin, model_class: Page\Entity\Site, controller: ~, manager_type: orm, group: admin, label: Site }
+  Page\Type\MapType:
+    arguments:
+      - !tagged_iterator page.block_service

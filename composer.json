@@ -1,0 +1,15 @@
+{
+    "name": "alxishin/sonata-vue",
+    "type": "symfony-bundle",
+    "require": {
+        "sonata-project/admin-bundle": "^4.12",
+        "doctrine/orm": "^2.12",
+        "twig/twig": "^3.0"
+    },
+    "authors": [
+        {
+            "name": "alxishin",
+            "email": "alxishin@gmail.com"
+        }
+    ]
+}

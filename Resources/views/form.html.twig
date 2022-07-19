@@ -1,0 +1,140 @@
+{% block map_type_widget %}
+    <script>
+        $(function(){
+
+            $(document).on("change","[data-toggle='service-selector']", function(){
+                let $this = $(this);
+                if(!$this.val()){
+                    return;
+                }
+                loadConfigForm($($this.data('target')), $this.val())
+            });
+
+            $(document).on("click","[data-toggle='add-before-prototype']", function(){
+                let $this = $(this);
+                $(this).data('counter', $(this).data('counter') + 1);
+                let counter = $(this).data('counter');
+                $this.before($this.data('prototype').replaceAll('___NUM___', counter));
+                Admin.shared_setup(document);
+            });
+
+            $(document).on("click","[data-toggle='ajax-change-num']", function(){
+                let $this = $(this);
+                $.ajax({
+                    dataType: 'html',
+                    url: '{{ path('page_ajax_change_num') }}?srv='+$this.data('srv'),
+                    method: 'POST',
+                    data: {num: $this.prev().val()}
+                });
+            });
+
+            $(document).on("click","[data-toggle='remove-from-slot']", function(){
+                let $this = $(this);
+                $.ajax({
+                    dataType: 'html',
+                    url: '{{ path('page_ajax_remove_from_slot') }}?srv='+$this.data('srv'),
+                    method: 'DELETE'
+                })
+                .done(function(response) {
+                    $($this.data('target')).remove();
+                });
+            });
+            $(document).on("click","[data-toggle='load-config-form']", function(){
+                let $this = $(this);
+                // console.log( $this.parent().parent().find('[data-toggle="service-selector"]'));
+                loadConfigForm($($this.data('target')), $this.parent().parent().parent().find('[data-toggle="service-selector"] option:selected').attr('value'))
+            });
+
+            function loadConfigForm(target, srv){
+                if(!srv){
+                    return;
+                }
+                $.ajax({
+                    dataType: 'html',
+                    url: '{{ path('ajax_form_config') }}?srv='+srv,
+                    method: 'GET'
+                })
+                .done(function(response) {
+                    target.html(response);
+                    Admin.shared_setup(document);
+                });
+            }
+
+            $(document).on("click","[data-toggle='save-config-form']", function(){
+                let $this = $(this);
+                $.ajax({
+                    dataType: 'html',
+                    url: '{{ path('ajax_form_config') }}?srv='+$this.data('srv'),
+                    method: 'POST',
+                    data: $this.parent().parent().find(':input').serialize()
+                })
+                .done(function(response) {
+                    $($this.data('target')).html(response);
+                });
+            });
+        });
+    </script>
+
+    {% for slot in page.template.slots %}
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <a class="" data-toggle="collapse" href="#slot-{{ slot }}-body" role="button" aria-expanded="true" aria-controls="slot-{{ slot }}-body">
+                    {{ slot }}
+                </a>
+            </div>
+            <div class="panel-body collapse in" aria-expanded="true" id="slot-{{ slot }}-body">
+                {% set lastNum = 0 %}
+                {% for num,config in page.getSlotConfig(slot) %}
+                    {{ _self.configForm(services, config, slot, num, page) }}
+                    {% set lastNum = num %}
+                {% endfor %}
+                <i style="cursor: pointer" data-counter="{{ lastNum }}" class="fas fa-plus-circle text-primary" aria-hidden="true" data-toggle="add-before-prototype" data-prototype="{{ _self.configForm(services, {'config':[], 'service':''}, slot, '___NUM___', page)|e }}"></i>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% macro configForm(services, config, slot, num, page) %}
+<div class="panel panel-default" id="slot-config-{{ slot }}-{{ num }}">
+    <div class="panel-heading">
+        {% set srv = page.id ~'__'~ slot~ '__'~ num %}
+        <i aria-hidden="true" title="Удалить" style="cursor: pointer" class="fa fa-remove text-danger" data-srv="{{ srv }}" data-toggle="remove-from-slot" data-target="#slot-config-{{ slot }}-{{ num }}"></i>
+        <a class="" data-toggle="collapse" href="#slot-config-{{ slot }}-{{ num }}-body" role="button" aria-expanded="true" aria-controls="slot-config-{{ slot }}-{{ num }}-body">
+            block #
+        </a>
+        <input type="number" value="{{ num }}" autocomplete="off"/>
+        <i
+                aria-hidden="true"
+                style="cursor: pointer"
+                class="fa fa-check-square text-success"
+                data-toggle="ajax-change-num"
+                data-srv="{{ srv }}"></i>
+    </div>
+    <div class="panel-body collapse in" id="slot-config-{{ slot }}-{{ num }}-body" aria-expanded="true">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label required">Service</label>
+                    <div class="sonata-ba-field">
+                        <select data-toggle="service-selector" data-target="#{{ slot }}-config-container-{{ num }}" autocomplete="off">
+                            <option value=""></option>
+                            {% set srv = null %}
+                            {% for service in services %}
+                                <option {% if service==config.service %}{% set srv = page.id ~'__'~ slot~ '__'~ service~'__' ~ num %}selected="selected" {% endif %}value="{{ page.id }}__{{ slot }}__{{ service }}__{{ num }}">{{ service }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" id="{{ slot }}-config-container-{{ num }}">
+{#                <i aria-hidden="true" style="cursor: pointer" class="fa fa-pencil text-primary" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}"></i>#}
+                {% if srv %}
+                    {{ render(controller('Page\\Controller\\AjaxController::renderConfigFormFromSrv',{'srv':srv})) }}
+                {% endif %}
+
+{#                <button type="button" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}">edit</button>#}
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
