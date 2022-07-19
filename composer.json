@@ -1,6 +1,8 @@
 {
     "name": "alxishin/sonata-vue",
     "type": "symfony-bundle",
+    "license": "MIT",
+    "description": "Simple bundle for integration sonata-admin and vue.js",
     "require": {
         "sonata-project/admin-bundle": "^4.12",
         "doctrine/orm": "^2.12",
