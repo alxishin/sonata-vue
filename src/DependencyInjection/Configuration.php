@@ -10,12 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Configuration implements ConfigurationInterface
 {
-
-	public function __construct()
-	{
-
-	}
-
 	/**
 	 * {@inheritdoc}
 	 */

@@ -47,6 +47,7 @@ class Page
 	public function __construct()
 	{
 		$this->createdAt = new \DateTimeImmutable();
+		$this->slotsOptions = [];
 	}
 
 

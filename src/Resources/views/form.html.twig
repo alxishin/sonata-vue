@@ -107,7 +107,7 @@
 <div class="panel panel-default" id="slot-config-{{ slot }}-{{ num }}">
     <div class="panel-heading">
         {% set psn = page.id ~'__'~ slot~ '__'~ num %}
-        <i aria-hidden="true" title="Удалить" style="cursor: pointer" class="fa fa-remove text-danger" data-psn="{{ psn }}" data-toggle="remove-from-slot" data-target="#slot-config-{{ slot }}-{{ num }}"></i>
+        <i aria-hidden="true" title="Удалить" style="cursor: pointer" class="fas fa-minus-circle text-primary" data-psn="{{ psn }}" data-toggle="remove-from-slot" data-target="#slot-config-{{ slot }}-{{ num }}"></i>
         <a class="" data-toggle="collapse" href="#slot-config-{{ slot }}-{{ num }}-body" role="button" aria-expanded="true" aria-controls="slot-config-{{ slot }}-{{ num }}-body">
             block #
         </a>

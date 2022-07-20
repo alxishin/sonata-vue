@@ -43,6 +43,4 @@ class MapType extends AbstractType
 		$view->vars['services'] = $this->blockServices;
 		$view->vars['page'] = $options['page'];
 	}
-
-
 }
