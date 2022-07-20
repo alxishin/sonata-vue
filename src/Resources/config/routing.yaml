@@ -1,4 +1,4 @@
 page_controllers:
     resource: ../../Controller/
     type: annotation
-    prefix: '%page.route_prefix%'
+    prefix: '%sonata_vue.route_prefix%'

@@ -138,7 +138,7 @@
             <div class="col-md-4" id="{{ slot }}-config-container-{{ num }}">
 {#                <i aria-hidden="true" style="cursor: pointer" class="fa fa-pencil text-primary" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}"></i>#}
                 {% if pssn %}
-                    {{ render(controller('Page\\Controller\\AjaxController::renderConfigFormFromSrv',{'pssn':pssn})) }}
+                    {{ render(controller('SonataVue\\Controller\\AjaxController::renderConfigFormFromSrv',{'pssn':pssn})) }}
                 {% endif %}
 
 {#                <button type="button" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}">edit</button>#}

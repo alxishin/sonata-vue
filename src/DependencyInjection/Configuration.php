@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
 	 */
 	public function getConfigTreeBuilder()
 	{
-		$treeBuilder = new TreeBuilder('page');
+		$treeBuilder = new TreeBuilder('sonata_vue');
 
 		$treeBuilder->getRootNode()
 			->children()

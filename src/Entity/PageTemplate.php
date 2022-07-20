@@ -2,10 +2,9 @@
 
 namespace SonataVue\Entity;
 
-use App\Repository\PageTemplateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PageTemplateRepository::class)]
+#[ORM\Entity()]
 class PageTemplate
 {
     #[ORM\Id]

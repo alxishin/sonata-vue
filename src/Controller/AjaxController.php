@@ -53,13 +53,13 @@ class AjaxController extends AbstractController
 				$doctrine->getManager()->flush();
 			}
 		}
-		return $this->render('@Page/form_placeholder.html.twig',['form'=>$form->createView()]);
+		return $this->render('@SonataVue/form_placeholder.html.twig',['form'=>$form->createView()]);
 	}
 
 	public function renderConfigFormFromSrv(string $pssn): Response
 	{
 		list($form, , , , ) = $this->parseSrvString($pssn);
-		return $this->render('@Page/form_placeholder.html.twig',['form'=>$form->createView()]);
+		return $this->render('@SonataVue/form_placeholder.html.twig',['form'=>$form->createView()]);
 	}
 
 	private function parseSrvString(string $pssn):array{
