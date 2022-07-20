@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SonataVue\DependencyInjection;
 
 
-use Page\Service\BlockInterface;
+use SonataVue\Service\BlockInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;

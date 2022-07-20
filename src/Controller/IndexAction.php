@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SonataVue\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Page\Entity\Page;
-use Page\Service\BlockInterface;
-use Page\Type\MapType;
+use SonataVue\Entity\Page;
+use SonataVue\Service\BlockInterface;
+use SonataVue\Type\MapType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

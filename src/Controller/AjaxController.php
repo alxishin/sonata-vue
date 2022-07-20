@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SonataVue\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Page\Entity\Page;
-use Page\Service\AbstractBlockService;
-use Page\Type\MapType;
+use SonataVue\Entity\Page;
+use SonataVue\Service\AbstractBlockService;
+use SonataVue\Type\MapType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
