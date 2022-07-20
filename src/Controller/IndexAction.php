@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\Controller;
+namespace SonataVue\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Page\Entity\Page;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class IndexAction extends AbstractController
 {
-	#[Route('/w/demo/{vueRouting}', name: 'page_main')]
+	#[Route('/{vueRouting}', name: 'page_main', requirements: ['vueRouting' => '^(?!ajax).*'])]
 	public function __invoke(MapType $mapType, ManagerRegistry $doctrine, string $vueRouting = ''): Response
 	{
 		$page = $doctrine->getRepository(Page::class)->findOneBy(['path'=>'/'.$vueRouting]);

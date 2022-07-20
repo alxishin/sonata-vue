@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\Service;
+namespace SonataVue\Service;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 

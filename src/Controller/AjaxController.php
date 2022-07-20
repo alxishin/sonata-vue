@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\Controller;
+namespace SonataVue\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Page\Entity\Page;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AjaxController extends AbstractController
 {
-	#[Route('/w/ajax/remove-from-slot', name: 'page_ajax_remove_from_slot', methods: ['DELETE'])]
+	#[Route('/ajax/remove-from-slot', name: 'page_ajax_remove_from_slot', methods: ['DELETE'])]
 	public function removeFromSlot(Request $request, ManagerRegistry $doctrine): Response
 	{
 		list($pageId, $slot, $num) = explode('__', $request->get('psn'));
@@ -27,7 +27,7 @@ class AjaxController extends AbstractController
 		return new Response('');
 	}
 
-	#[Route('/w/ajax/change-num', name: 'page_ajax_change_num', methods: ['POST'])]
+	#[Route('/ajax/change-num', name: 'page_ajax_change_num', methods: ['POST'])]
 	public function changeNum(Request $request, ManagerRegistry $doctrine): Response
 	{
 		list($pageId, $slot, $num) = explode('__', $request->get('psn'));
@@ -39,7 +39,7 @@ class AjaxController extends AbstractController
 		return new Response('');
 	}
 
-	#[Route('/w/ajax/form-config', name: 'page_ajax_form_config', methods: ['GET', 'POST'])]
+	#[Route('/ajax/form-config', name: 'page_ajax_form_config', methods: ['GET', 'POST'])]
 	public function configForm(Request $request, ManagerRegistry $doctrine): Response
 	{
 		list($form, $page, $service, $slot, $num) = $this->parseSrvString($request->get('pssn'));

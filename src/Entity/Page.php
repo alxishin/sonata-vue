@@ -1,6 +1,6 @@
 <?php
 
-namespace Page\Entity;
+namespace SonataVue\Entity;
 
 use App\Repository\PageRepository;
 use Doctrine\ORM\Mapping as ORM;

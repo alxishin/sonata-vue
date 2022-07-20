@@ -1,6 +1,6 @@
 <?php
 
-namespace Page\Entity;
+namespace SonataVue\Entity;
 
 use App\Repository\SiteRepository;
 use Doctrine\Common\Collections\ArrayCollection;

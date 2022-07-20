@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\Type;
+namespace SonataVue\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Page\Service;
+namespace SonataVue\Service;
 
 interface BlockInterface
 {

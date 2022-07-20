@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\DependencyInjection;
+namespace SonataVue\DependencyInjection;
 
 
 use Page\Service\BlockInterface;
@@ -16,24 +16,25 @@ class PageExtension extends Extension
 	/**
 	 * {@inheritdoc}
 	 */
-	final public function getConfiguration(array $config, ContainerBuilder $container): Configuration
-	{
-		return new Configuration((bool) $container->getParameter('kernel.debug'));
-	}
+//	final public function getConfiguration(array $config, ContainerBuilder $container): Configuration
+//	{
+//		return new Configuration((bool) $container->getParameter('kernel.debug'));
+//	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function load(array $configs, ContainerBuilder $container)
 	{
+		$configuration = new Configuration();
+//
+		$config = $this->processConfiguration($configuration, $configs);
+		$container->setParameter('page.route_prefix', $config['route_prefix']);
+//		dd($configs);
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('service.yml');
 		$container->registerForAutoconfiguration(BlockInterface::class)
 			->addTag('page.block_service')
 		;
-//		$configuration = new \Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration();
-//
-//		$config = $this->processConfiguration($configuration, $configs);
-//		dd($config);
 	}
 }

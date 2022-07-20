@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\DependencyInjection;
+namespace SonataVue\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -10,17 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Configuration implements ConfigurationInterface
 {
-	/**
-	 * @var array
-	 */
-	protected $defaultContainerTemplates;
 
-	/**
-	 * @param array $defaultContainerTemplates
-	 */
-	public function __construct(array $defaultContainerTemplates)
+	public function __construct()
 	{
-		$this->defaultContainerTemplates = $defaultContainerTemplates;
+
 	}
 
 	/**
@@ -28,12 +21,11 @@ class Configuration implements ConfigurationInterface
 	 */
 	public function getConfigTreeBuilder()
 	{
-		$treeBuilder = new TreeBuilder('sonata_vue');
+		$treeBuilder = new TreeBuilder('page');
 
 		$treeBuilder->getRootNode()
 			->children()
 			->scalarNode('route_prefix')->end()
-			->scalarNode('api_route_prefix')->end()
 			->end()
 			->end()
 		;

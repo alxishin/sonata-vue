@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\Controller;
+namespace SonataVue\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
 

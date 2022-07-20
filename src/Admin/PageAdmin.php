@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\Admin;
+namespace SonataVue\Admin;
 
 use Page\Type\MapType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

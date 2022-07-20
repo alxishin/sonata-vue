@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Page\Service;
+namespace SonataVue\Service;
 
 use Sonata\AdminBundle\Form\Type\CollectionType;
 
