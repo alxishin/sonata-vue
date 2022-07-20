@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Page\DependencyInjection;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration;
+
 use Page\Service\BlockInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,7 +31,9 @@ class PageExtension extends Extension
 		$container->registerForAutoconfiguration(BlockInterface::class)
 			->addTag('page.block_service')
 		;
-
-
+//		$configuration = new \Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration();
+//
+//		$config = $this->processConfiguration($configuration, $configs);
+//		dd($config);
 	}
 }

@@ -183,21 +183,21 @@ class Page
 		return $this->getSlotsOptions()[$slot] ?? [['config'=>[],'service'=>null]];
 	}
 
-	public function setSlotConfig(string $slot, string $service, string $num, array $config){
+	public function setSlotConfig(string $slot, string $service, int $num, array $config){
 		$options = $this->getSlotsOptions();
 		$options[$slot][$num] = ['service'=>$service, 'config'=>$config];
 		$this->setSlotsOptions($options);
 		return $this;
 	}
 
-	public function removeFromSlot(string $slot, string $num):self{
+	public function removeFromSlot(string $slot, int $num):self{
 		$options = $this->getSlotsOptions();
 		unset($options[$slot][$num]);
 		$this->setSlotsOptions($options);
 		return $this;
 	}
 
-	public function changeNum(string $slot, string $oldNum, string $newNum):self{
+	public function changeNum(string $slot, int $oldNum, int $newNum):self{
 		$options = $this->getSlotsOptions();
 		$config = $options[$slot][$oldNum];
 		unset($options[$slot][$oldNum]);

@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TextBlockService extends AbstractBlockService
 {
-	protected function configureForm()
+	protected function getFieldsForConfigForm()
 	{
 		return ['text' => [TextType::class, []]];
 	}

@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 
 class ListBlockService extends AbstractBlockService
 {
-	protected function configureForm()
+	protected function getFieldsForConfigForm()
 	{
 		return ['list' => [CollectionType::class, ['allow_add'=>'true','allow_delete'=>true,'prototype_name'=>0]]];
 	}

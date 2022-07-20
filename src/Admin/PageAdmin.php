@@ -44,7 +44,7 @@ final class PageAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
 		$form
-			->with('map',['tab'=>true])
+			->with('slots',['tab'=>true])
 				->add('slotMap', MapType::class,['mapped'=>false,'page'=>$this->getSubject(),'label'=>false])
 			->end()
 			->end()
