@@ -17,21 +17,22 @@ class Site
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $publishedAt;
-
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $publishedUntil;
-
     #[ORM\Column(type: 'text', nullable: true)]
     private $robots;
 
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Page::class)]
     private $pages;
 
+	#[ORM\Column(type: 'json', nullable: true)]
+	private $hostNames;
+
+	#[ORM\Column(type: 'boolean', nullable: false)]
+	private $published;
+
     public function __construct()
     {
         $this->pages = new ArrayCollection();
+		$this->published = true;
     }
 
     public function getId(): ?int
@@ -47,30 +48,6 @@ class Site
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getPublishedAt(): ?\DateTimeImmutable
-    {
-        return $this->publishedAt;
-    }
-
-    public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
-    {
-        $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function getPublishedUntil(): ?\DateTimeImmutable
-    {
-        return $this->publishedUntil;
-    }
-
-    public function setPublishedUntil(?\DateTimeImmutable $publishedUntil): self
-    {
-        $this->publishedUntil = $publishedUntil;
 
         return $this;
     }
@@ -116,6 +93,28 @@ class Site
 
         return $this;
     }
+
+	public function getHostNames():?array
+	{
+		return $this->hostNames;
+	}
+
+	public function setHostNames(?array $hostNames):self
+	{
+		$this->hostNames = $hostNames;
+		return $this;
+	}
+
+	public function isPublished(): bool
+	{
+		return $this->published;
+	}
+
+	public function setPublished(bool $published): self
+	{
+		$this->published = $published;
+		return $this;
+	}
 
 	public function __toString(): string
 	{

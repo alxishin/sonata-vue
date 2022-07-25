@@ -6,24 +6,19 @@ namespace SonataVue\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use SonataVue\Entity\Page;
+use SonataVue\Exception\PageNotFoundException;
 use SonataVue\Service\BlockInterface;
+use SonataVue\Service\PageService;
 use SonataVue\Type\MapType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class IndexAction extends AbstractController
 {
-	#[Route('/{vueRouting}', name: 'page_main', requirements: ['vueRouting' => '^(?!ajax).*'])]
-	public function __invoke(MapType $mapType, ManagerRegistry $doctrine, string $vueRouting = ''): Response
+	public function __invoke(Request $request, PageService $pageService, ManagerRegistry $doctrine): Response
 	{
-		$page = $doctrine->getRepository(Page::class)->findOneBy(['path'=>'/'.$vueRouting]);
-		$result = [];
-		foreach ($page->getSlotsOptions() as $slot=>$configs){
-			foreach ($configs as $num=>$config){
-				$result[$slot][$num] = $mapType->getBlockServices()[$config['service']]->buildData($config['config']);
-			}
-		}
-		return $this->json($result);
+		return $pageService->renderPage($doctrine->getRepository(Page::class)->find($request->attributes->getInt('_page_id')));
 	}
 }

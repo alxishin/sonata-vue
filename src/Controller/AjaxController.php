@@ -19,6 +19,7 @@ class AjaxController extends AbstractController
 	#[Route('/ajax/remove-from-slot', name: 'page_ajax_remove_from_slot', methods: ['DELETE'])]
 	public function removeFromSlot(Request $request, ManagerRegistry $doctrine): Response
 	{
+		$this->checkAccess();
 		list($pageId, $slot, $num) = explode('__', $request->get('psn'));
 		$num = (int)$num;
 		$page = $doctrine->getRepository(Page::class)->find($pageId);
@@ -30,6 +31,7 @@ class AjaxController extends AbstractController
 	#[Route('/ajax/change-num', name: 'page_ajax_change_num', methods: ['POST'])]
 	public function changeNum(Request $request, ManagerRegistry $doctrine): Response
 	{
+		$this->checkAccess();
 		list($pageId, $slot, $num) = explode('__', $request->get('psn'));
 		$num = (int)$num;
 		$page = $doctrine->getRepository(Page::class)->find($pageId);
@@ -42,9 +44,10 @@ class AjaxController extends AbstractController
 	#[Route('/ajax/form-config', name: 'page_ajax_form_config', methods: ['GET', 'POST'])]
 	public function configForm(Request $request, ManagerRegistry $doctrine): Response
 	{
-		list($form, $page, $service, $slot, $num) = $this->parseSrvString($request->get('pssn'));
+		$this->checkAccess();
+		list($form, $page, $service, $slot, $num) = $this->parsePssnString($request->get('pssn'));
 		if($request->isMethod(Request::METHOD_POST)){
-			$form = $service->getConfigForm($this->createFormBuilder(), $request->get('pssn'), $slot);
+			$form = $service->getConfigForm($this->createFormBuilder(), $request->get('pssn'), $slot, $num);
 			$form->handleRequest($request);
 			if($form->isValid()){
 				$data = $form->getData();
@@ -56,13 +59,14 @@ class AjaxController extends AbstractController
 		return $this->render('@SonataVue/form_placeholder.html.twig',['form'=>$form->createView()]);
 	}
 
-	public function renderConfigFormFromSrv(string $pssn): Response
+	public function renderConfigFormFromPssn(string $pssn): Response
 	{
-		list($form, , , , ) = $this->parseSrvString($pssn);
+		$this->checkAccess();
+		list($form, , , , ) = $this->parsePssnString($pssn);
 		return $this->render('@SonataVue/form_placeholder.html.twig',['form'=>$form->createView()]);
 	}
 
-	private function parseSrvString(string $pssn):array{
+	private function parsePssnString(string $pssn):array{
 		list($pageId, $slot, $serviceClassName, $num) = explode('__', $pssn);
 
 		$service = $this->mapType->getBlockServices()[$serviceClassName] ?? null;
@@ -75,7 +79,11 @@ class AjaxController extends AbstractController
 			$data = $page->getSlotsOptions()[$slot][$num]['config'];
 		}
 		/** @var AbstractBlockService $service */
-		return [$service->getConfigForm($this->createFormBuilder($data), $pssn, $slot), $page, $service, $slot, (int)$num];
+		return [$service->getConfigForm($this->createFormBuilder($data), $pssn, $slot, $num), $page, $service, $slot, (int)$num];
+	}
+
+	private function checkAccess(){
+		$this->denyAccessUnlessGranted($this->getParameter('sonata_vue.role_for_ajax_request'));
 	}
 
 	public function __construct(private readonly ManagerRegistry $doctrine, private readonly MapType $mapType)

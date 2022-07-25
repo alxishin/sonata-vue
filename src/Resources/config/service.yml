@@ -18,4 +18,9 @@ services:
       resource: '../../Service/'
   SonataVue\Controller\:
       resource: '../../Controller/'
-
+  SonataVue\Subscriber\:
+    resource: '../../Subscriber/'
+  SonataVue\Routing\RouterLoader:
+    arguments:
+      $routePrefix: '%sonata_vue.route_prefix%'
+    tags: [routing.loader]

@@ -13,9 +13,8 @@ class ListBlockService extends AbstractBlockService
 		return ['list' => [CollectionType::class, ['allow_add'=>'true','allow_delete'=>true,'prototype_name'=>0]]];
 	}
 
-	public function buildData(array $options)
+	public function buildData(array $options, ?array $routeParams)
 	{
 		return $options['list'];
 	}
-
 }

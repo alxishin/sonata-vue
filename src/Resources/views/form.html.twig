@@ -23,11 +23,17 @@
 
             $(document).on("click","[data-toggle='ajax-change-num']", function(){
                 let $this = $(this);
+                $this.parent().css('opacity', 0.3);
                 $.ajax({
                     dataType: 'html',
                     url: '{{ path('page_ajax_change_num') }}?psn='+$this.data('psn'),
                     method: 'POST',
                     data: {num: $this.prev().val()}
+                }).fail(function(){
+                    $this.parent().css('opacity', 1);
+                    $this.prev().val($this.data('original-num'));
+                }).done(function(){
+                    $this.parent().css('opacity', 1);
                 });
             });
 
@@ -46,7 +52,6 @@
             });
             $(document).on("click","[data-toggle='load-config-form']", function(){
                 let $this = $(this);
-                // console.log( $this.parent().parent().find('[data-toggle="service-selector"]'));
                 loadConfigForm($($this.data('target')), $this.parent().parent().parent().find('[data-toggle="service-selector"] option:selected').attr('value'))
             });
 
@@ -71,36 +76,45 @@
                 $this.parent().parent().find(':button').each(function(){
                     data.push({name: $(this).attr('name'), value: ''});
                 });
+                // console.log($this.data('target'));
+                $($this.data('target')).css('opacity', 0.3);
+                // return;
                 $.ajax({
                     dataType: 'html',
                     url: '{{ path('page_ajax_form_config') }}?pssn='+$this.data('pssn'),
                     method: 'POST',
                     data: data
                 })
+                .fail(function(response) {
+                    $($this.data('target')).css('opacity', 1);
+                    $($this.data('target')).html('Ошибка');
+                })
                 .done(function(response) {
                     $($this.data('target')).html(response);
+                    $($this.data('target')).css('opacity', 1);
                 });
             });
         });
     </script>
-
-    {% for slot in page.template.slots %}
-        <div class="panel panel-info slot-container">
-            <div class="panel-heading">
-                <a class="" data-toggle="collapse" href="#slot-{{ slot }}-body" role="button" aria-expanded="true" aria-controls="slot-{{ slot }}-body">
-                    {{ slot }}
-                </a>
+    {% if page.template is not null %}
+        {% for slot in page.template.slots %}
+            <div class="panel panel-info slot-container">
+                <div class="panel-heading">
+                    <a class="" data-toggle="collapse" href="#slot-{{ slot }}-body" role="button" aria-expanded="true" aria-controls="slot-{{ slot }}-body">
+                        {{ slot }}
+                    </a>
+                </div>
+                <div class="panel-body collapse in" aria-expanded="true" id="slot-{{ slot }}-body">
+                    {% set lastNum = 0 %}
+                    {% for num,config in page.getSlotConfig(slot) %}
+                        {{ _self.configForm(services, config, slot, num, page) }}
+                        {% set lastNum = num %}
+                    {% endfor %}
+                    <i style="cursor: pointer" data-counter="{{ lastNum }}" class="fas fa-plus-circle text-primary" aria-hidden="true" data-toggle="add-before-prototype" data-prototype="{{ _self.configForm(services, {'config':[], 'service':''}, slot, '___NUM___', page)|e }}"></i>
+                </div>
             </div>
-            <div class="panel-body collapse in" aria-expanded="true" id="slot-{{ slot }}-body">
-                {% set lastNum = 0 %}
-                {% for num,config in page.getSlotConfig(slot) %}
-                    {{ _self.configForm(services, config, slot, num, page) }}
-                    {% set lastNum = num %}
-                {% endfor %}
-                <i style="cursor: pointer" data-counter="{{ lastNum }}" class="fas fa-plus-circle text-primary" aria-hidden="true" data-toggle="add-before-prototype" data-prototype="{{ _self.configForm(services, {'config':[], 'service':''}, slot, '___NUM___', page)|e }}"></i>
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% macro configForm(services, config, slot, num, page) %}
@@ -117,6 +131,7 @@
                 style="cursor: pointer"
                 class="fa fa-check-square text-success"
                 data-toggle="ajax-change-num"
+                data-original-num="{{ num }}"
                 data-psn="{{ psn }}"></i>
     </div>
     <div class="panel-body collapse in" id="slot-config-{{ slot }}-{{ num }}-body" aria-expanded="true">
@@ -138,7 +153,7 @@
             <div class="col-md-4" id="{{ slot }}-config-container-{{ num }}">
 {#                <i aria-hidden="true" style="cursor: pointer" class="fa fa-pencil text-primary" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}"></i>#}
                 {% if pssn %}
-                    {{ render(controller('SonataVue\\Controller\\AjaxController::renderConfigFormFromSrv',{'pssn':pssn})) }}
+                    {{ render(controller('SonataVue\\Controller\\AjaxController::renderConfigFormFromPssn',{'pssn':pssn})) }}
                 {% endif %}
 
 {#                <button type="button" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}">edit</button>#}

@@ -13,7 +13,7 @@ class TextBlockService extends AbstractBlockService
 		return ['text' => [TextType::class, []]];
 	}
 
-	public function buildData(array $options)
+	public function buildData(array $options, ?array $routeParams)
 	{
 		return $options['text'];
 	}

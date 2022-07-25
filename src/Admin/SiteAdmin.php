@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 final class SiteAdmin extends AbstractAdmin
 {
@@ -22,8 +23,7 @@ final class SiteAdmin extends AbstractAdmin
     {
         $list
             ->add('title')
-            ->add('publishedAt')
-            ->add('publishedUntil')
+			->add('published')
             ->add('robots')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
@@ -39,6 +39,8 @@ final class SiteAdmin extends AbstractAdmin
         $form
             ->add('title')
             ->add('robots')
+            ->add('hostNames', CollectionType::class,['allow_add'=>true,'allow_delete'=>true])
+			->add('published')
             ;
     }
 
@@ -46,8 +48,7 @@ final class SiteAdmin extends AbstractAdmin
     {
         $show
             ->add('title')
-            ->add('publishedAt')
-            ->add('publishedUntil')
+            ->add('published')
             ->add('robots')
             ;
     }

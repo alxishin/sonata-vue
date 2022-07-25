@@ -2,3 +2,6 @@ page_controllers:
     resource: ../../Controller/
     type: annotation
     prefix: '%sonata_vue.route_prefix%'
+app_extra:
+    resource: .
+    type: extra

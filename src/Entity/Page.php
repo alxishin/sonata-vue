@@ -3,51 +3,68 @@
 namespace SonataVue\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use SonataVue\Model\ArrayNullOnNotIssetKeyModel;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity()]
+#[ORM\HasLifecycleCallbacks]
 class Page
 {
+	const RESPONSE_TYPE_JSON = 0;
+	const RESPONSE_TYPE_HTML = 1;
+	const RESPONSE_TYPE_TEXT = 2;
+	const RESPONSE_TYPE_MANUAL = 3;
+
+	const RESPONSE_TYPES = [
+		'json'=>self::RESPONSE_TYPE_JSON,
+		'html'=>self::RESPONSE_TYPE_HTML,
+		'text'=>self::RESPONSE_TYPE_TEXT,
+		'manual'=>self::RESPONSE_TYPE_MANUAL,
+	];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $path;
+    private string $path;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $publishedAt;
-
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $publishedUntil;
+	#[ORM\Column(type: 'boolean', nullable: false)]
+	private bool $published;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private $requirements = [];
+    private array $requirements = [];
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private $defaults = [];
+    private array $defaults = [];
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     #[ORM\ManyToOne(targetEntity: Site::class, inversedBy: 'pages')]
     #[ORM\JoinColumn(nullable: false)]
-    private $site;
+    private Site $site;
 
     #[ORM\ManyToOne(targetEntity: PageTemplate::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $template;
 
+	#[ORM\Column(type: 'smallint', nullable: true)]
+	private ?int $responseType;
+
 	#[ORM\Column(type: 'json', nullable: true)]
-	private $slotsOptions = [];
+	private ?array $slotsOptions = [];
 
 	public function __construct()
 	{
 		$this->createdAt = new \DateTimeImmutable();
 		$this->slotsOptions = [];
+		$this->published = true;
+		$this->responseType = self::RESPONSE_TYPE_JSON;
 	}
 
 
@@ -64,30 +81,6 @@ class Page
     public function setPath(?string $path): self
     {
         $this->path = $path;
-
-        return $this;
-    }
-
-    public function getPublishedAt(): ?\DateTimeImmutable
-    {
-        return $this->publishedAt;
-    }
-
-    public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
-    {
-        $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function getPublishedUntil(): ?\DateTimeImmutable
-    {
-        return $this->publishedUntil;
-    }
-
-    public function setPublishedUntil(?\DateTimeImmutable $publishedUntil): self
-    {
-        $this->publishedUntil = $publishedUntil;
 
         return $this;
     }
@@ -176,10 +169,47 @@ class Page
 		return $this;
 	}
 
+	public function isPublished(): bool
+	{
+		return $this->published;
+	}
+
+	public function setPublished(bool $published): self
+	{
+		$this->published = $published;
+		return $this;
+	}
+
+	public function getResponseType():?int
+	{
+		return $this->responseType;
+	}
+
+	public function setResponseType(int $responseType):self
+	{
+		$this->responseType = $responseType;
+		return $this;
+	}
+
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
+	public function setUpdatedAtValue(): void
+	{
+		$this->updatedAt = new \DateTimeImmutable();
+	}
+
+	#[ORM\PrePersist]
+	public function setCreatedAtValue(): void
+	{
+		$this->createdAt = new \DateTimeImmutable();
+	}
+
+
 	public function getSlotMap(){
 		return $this;
 	}
 	public function getSlotConfig(string $slot){
+		return $this->getSlotsOptions()[$slot] ?? null;
 		return $this->getSlotsOptions()[$slot] ?? [['config'=>[],'service'=>null]];
 	}
 
@@ -199,10 +229,41 @@ class Page
 
 	public function changeNum(string $slot, int $oldNum, int $newNum):self{
 		$options = $this->getSlotsOptions();
+		if($oldNum===$newNum){
+			return $this;
+		}
+		if(isset($options[$slot][$newNum])){
+			throw new \Exception('Номер блока занят');
+		}
 		$config = $options[$slot][$oldNum];
 		unset($options[$slot][$oldNum]);
 		$options[$slot][$newNum] = $config;
 		$this->setSlotsOptions($options);
 		return $this;
 	}
+
+	private function prepareParams(array $params = null){
+		if(is_null($params)){
+			return [];
+		}
+		$result = [];
+		foreach ($params as $param){
+			$paramArray = explode(': ', $param);
+			$paramArrayTmp = $paramArray;
+			unset($paramArrayTmp[0]);
+			$result[$paramArray[0]] = implode(': ', $paramArrayTmp);
+			$result[$paramArray[0]] = $result[$paramArray[0]] ==='null' ? null : $result[$paramArray[0]];
+		}
+		return $result;
+		return (new ArrayNullOnNotIssetKeyModel($result));
+	}
+
+	public function getPreparedRequirements(){
+		return $this->prepareParams($this->getRequirements());
+	}
+
+	public function getPreparedDefaults(){
+		return $this->prepareParams($this->getDefaults());
+	}
+
 }

@@ -25,11 +25,11 @@ abstract class AbstractBlockService implements BlockInterface
 		return [];
 	}
 
-	abstract public function buildData(array $options);
+	abstract public function buildData(array $options, ?array $routeParams);
 
-	public function getConfigForm(FormBuilderInterface $builder, string $pssn, string $slot):FormInterface{
+	public function getConfigForm(FormBuilderInterface $builder, string $pssn, string $slot, mixed $num):FormInterface{
 		$this->addFieldsToConfigForm($builder);
-		$this->addSaveButtonToConfigForm($builder, $pssn, $slot);
+		$this->addSaveButtonToConfigForm($builder, $pssn, $slot, $num);
 		return $builder->getForm();
 	}
 
@@ -39,11 +39,11 @@ abstract class AbstractBlockService implements BlockInterface
 		}
 	}
 
-	protected function addSaveButtonToConfigForm(FormBuilderInterface $builder, string $pssn, string $slot){
+	protected function addSaveButtonToConfigForm(FormBuilderInterface $builder, string $pssn, string $slot, mixed $num){
 		$builder->add('save',ButtonType::class,['attr'=>[
 			'class'=>'btn btn-success',
 			'data-pssn'=>$pssn,
 			'data-toggle'=>'save-config-form',
-			'data-target'=>'#'.$slot.'-config-container']]);
+			'data-target'=>'#'.$slot.'-config-container-'.$num]]);
 	}
 }

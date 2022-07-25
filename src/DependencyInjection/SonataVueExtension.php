@@ -30,6 +30,7 @@ class SonataVueExtension extends Extension
 
 		$config = $this->processConfiguration($configuration, $configs);
 		$container->setParameter('sonata_vue.route_prefix', $config['route_prefix']);
+		$container->setParameter('sonata_vue.role_for_ajax_request', $config['role_for_ajax_request']);
 
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('service.yml');

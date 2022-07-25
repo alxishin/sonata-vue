@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
 		$treeBuilder->getRootNode()
 			->children()
 			->scalarNode('route_prefix')->end()
+			->scalarNode('role_for_ajax_request')->defaultValue('ROLE_ADMIN')->isRequired()->end()
 			->end()
 			->end()
 		;

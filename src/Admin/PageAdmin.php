@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace SonataVue\Admin;
 
+use SonataVue\Entity\Page;
 use SonataVue\Type\MapType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 
 final class PageAdmin extends AbstractAdmin
@@ -19,8 +22,7 @@ final class PageAdmin extends AbstractAdmin
     {
         $filter
             ->add('path')
-            ->add('publishedAt')
-            ->add('publishedUntil')
+			->add('published')
             ->add('requirements')
             ->add('defaults')
             ->add('createdAt')
@@ -32,6 +34,7 @@ final class PageAdmin extends AbstractAdmin
     {
         $list
             ->add('path')
+			->add('published',null,['editable'=>true])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
@@ -50,11 +53,12 @@ final class PageAdmin extends AbstractAdmin
 			->end()
 			->with('options',['tab'=>true])
 				->add('path')
+//				->add('responseType', ChoiceType::class, ['choices'=>Page::RESPONSE_TYPES])
 				->add('template')
 				->add('site')
-				->add('site')
-				->add('requirements')
-				->add('defaults')
+				->add('published')
+				->add('defaults',CollectionType::class,['allow_add'=>true,'allow_delete'=>true, 'label_format' => '%name%'])
+				->add('requirements',CollectionType::class,['allow_add'=>true,'allow_delete'=>true, 'label_format' => '%name%'])
 			->end()
 		;
     }
@@ -63,8 +67,7 @@ final class PageAdmin extends AbstractAdmin
     {
         $show
             ->add('path')
-            ->add('publishedAt')
-            ->add('publishedUntil')
+			->add('published')
             ->add('requirements')
             ->add('defaults')
             ->add('createdAt')
