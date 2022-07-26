@@ -21,6 +21,6 @@ services:
   SonataVue\Subscriber\:
     resource: '../../Subscriber/'
   SonataVue\Routing\RouterLoader:
+    tags: [routing.loader]
     arguments:
       $routePrefix: '%sonata_vue.route_prefix%'
-    tags: [routing.loader]

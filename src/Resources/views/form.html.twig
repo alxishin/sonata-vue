@@ -1,5 +1,11 @@
 {% block map_type_widget %}
     <script>
+        window.onload = function() {
+            if (!window.jQuery) {
+                alert("jQuery Doesn't Work");
+            }
+        }
+
         $(function(){
 
             $(document).on("change","[data-toggle='service-selector']", function(){
@@ -76,9 +82,7 @@
                 $this.parent().parent().find(':button').each(function(){
                     data.push({name: $(this).attr('name'), value: ''});
                 });
-                // console.log($this.data('target'));
                 $($this.data('target')).css('opacity', 0.3);
-                // return;
                 $.ajax({
                     dataType: 'html',
                     url: '{{ path('page_ajax_form_config') }}?pssn='+$this.data('pssn'),
@@ -151,12 +155,9 @@
                 </div>
             </div>
             <div class="col-md-4" id="{{ slot }}-config-container-{{ num }}">
-{#                <i aria-hidden="true" style="cursor: pointer" class="fa fa-pencil text-primary" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}"></i>#}
                 {% if pssn %}
                     {{ render(controller('SonataVue\\Controller\\AjaxController::renderConfigFormFromPssn',{'pssn':pssn})) }}
                 {% endif %}
-
-{#                <button type="button" data-toggle="load-config-form" data-target="#{{ slot }}-config-container-{{ num }}">edit</button>#}
             </div>
         </div>
     </div>

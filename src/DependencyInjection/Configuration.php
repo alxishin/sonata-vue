@@ -27,15 +27,4 @@ class Configuration implements ConfigurationInterface
 
 		return $treeBuilder;
 	}
-
-	/**
-	 * @param array $config
-	 * @param ContainerBuilder $container
-	 *
-	 * @return Configuration
-	 */
-	public function getConfiguration(array $config, ContainerBuilder $container)
-	{
-		return new self([]);
-	}
 }

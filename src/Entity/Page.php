@@ -3,8 +3,6 @@
 namespace SonataVue\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SonataVue\Model\ArrayNullOnNotIssetKeyModel;
-use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity()]
 #[ORM\HasLifecycleCallbacks]
@@ -204,13 +202,12 @@ class Page
 		$this->createdAt = new \DateTimeImmutable();
 	}
 
-
-	public function getSlotMap(){
-		return $this;
-	}
 	public function getSlotConfig(string $slot){
-		return $this->getSlotsOptions()[$slot] ?? null;
-		return $this->getSlotsOptions()[$slot] ?? [['config'=>[],'service'=>null]];
+		$config = $this->getSlotsOptions()[$slot] ?? null;
+		if(!is_null($config)){
+			ksort($config);
+		}
+		return $config;
 	}
 
 	public function setSlotConfig(string $slot, string $service, int $num, array $config){
@@ -255,7 +252,6 @@ class Page
 			$result[$paramArray[0]] = $result[$paramArray[0]] ==='null' ? null : $result[$paramArray[0]];
 		}
 		return $result;
-		return (new ArrayNullOnNotIssetKeyModel($result));
 	}
 
 	public function getPreparedRequirements(){
