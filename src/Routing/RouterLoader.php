@@ -27,24 +27,27 @@ class RouterLoader extends \Symfony\Component\Config\Loader\Loader
 		}
 
 		$routes = new RouteCollection();
+		try{
+			/** @var Page $page */
+			foreach ($this
+						 ->doctrine
+						 ->getRepository(Page::class)
+						 ->createQueryBuilder('p')
+						 ->join('p.site','s')
+						 ->where('s.published=true and p.published=true')
+						 ->getQuery()
+						 ->getResult() as $page){
 
-		/** @var Page $page */
-		foreach ($this
-					 ->doctrine
-					 ->getRepository(Page::class)
-					 ->createQueryBuilder('p')
-					 ->join('p.site','s')
-					 ->where('s.published=true and p.published=true')
-					 ->getQuery()
-					 ->getResult() as $page){
+				if(!$page->getSite()->getHostNames()){
+					$this->addRouteFromPage($routes, $page);
+					continue;
+				}
+				foreach ($page->getSite()->getHostNames() as $hostName){
+					$this->addRouteFromPage($routes, $page, $hostName);
+				}
+			}
+		}catch (\Throwable $exception){
 
-			if(!$page->getSite()->getHostNames()){
-				$this->addRouteFromPage($routes, $page);
-				continue;
-			}
-			foreach ($page->getSite()->getHostNames() as $hostName){
-				$this->addRouteFromPage($routes, $page, $hostName);
-			}
 		}
 
 		$this->isLoaded = true;

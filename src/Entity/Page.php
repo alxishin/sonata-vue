@@ -204,27 +204,27 @@ class Page
 
 	public function getSlotConfig(string $slot){
 		$config = $this->getSlotsOptions()[$slot] ?? null;
-		if(!is_null($config)){
-			ksort($config);
-		}
+//		if(!is_null($config)){
+//			ksort($config);
+//		}
 		return $config;
 	}
 
-	public function setSlotConfig(string $slot, string $service, int $num, array $config){
+	public function setSlotConfig(string $slot, string $service, string $num, array $config){
 		$options = $this->getSlotsOptions();
 		$options[$slot][$num] = ['service'=>$service, 'config'=>$config];
 		$this->setSlotsOptions($options);
 		return $this;
 	}
 
-	public function removeFromSlot(string $slot, int $num):self{
+	public function removeFromSlot(string $slot, string $num):self{
 		$options = $this->getSlotsOptions();
 		unset($options[$slot][$num]);
 		$this->setSlotsOptions($options);
 		return $this;
 	}
 
-	public function changeNum(string $slot, int $oldNum, int $newNum):self{
+	public function changeNum(string $slot, string $oldNum, string $newNum):self{
 		$options = $this->getSlotsOptions();
 		if($oldNum===$newNum){
 			return $this;

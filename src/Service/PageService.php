@@ -22,6 +22,7 @@ class PageService
 		foreach ($page->getSlotsOptions() ?? [] as $slot=>$configs){
 			foreach ($configs as $num=>$config){
 				$result[$slot][$num] = $this->mapType->getBlockServices()[$config['service']]->buildData($config['config'], $this->requestStack->getMainRequest()->attributes->get('_route_params'));
+//				$result[$slot][] = $this->mapType->getBlockServices()[$config['service']]->buildData($config['config'], $this->requestStack->getMainRequest()->attributes->get('_route_params'));
 			}
 		}
 

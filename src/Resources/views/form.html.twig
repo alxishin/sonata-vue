@@ -37,9 +37,10 @@
                     data: {num: $this.prev().val()}
                 }).fail(function(){
                     $this.parent().css('opacity', 1);
-                    $this.prev().val($this.data('original-num'));
+                    // $this.prev().val($this.data('original-num'));
                 }).done(function(){
                     $this.parent().css('opacity', 1);
+                    document.location.reload();
                 });
             });
 
@@ -127,9 +128,9 @@
         {% set psn = page.id ~'__'~ slot~ '__'~ num %}
         <i aria-hidden="true" title="Удалить" style="cursor: pointer" class="fas fa-minus-circle text-primary" data-psn="{{ psn }}" data-toggle="remove-from-slot" data-target="#slot-config-{{ slot }}-{{ num }}"></i>
         <a class="" data-toggle="collapse" href="#slot-config-{{ slot }}-{{ num }}-body" role="button" aria-expanded="true" aria-controls="slot-config-{{ slot }}-{{ num }}-body">
-            block #
+            block
         </a>
-        <input type="number" value="{{ num }}" autocomplete="off" data-toggle="num-input"/>
+        <input type="text" value="{{ num }}" autocomplete="off" data-toggle="num-input"/>
         <i
                 aria-hidden="true"
                 style="cursor: pointer"

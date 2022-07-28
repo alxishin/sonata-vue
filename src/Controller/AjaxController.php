@@ -21,7 +21,7 @@ class AjaxController extends AbstractController
 	{
 		$this->checkAccess();
 		list($pageId, $slot, $num) = explode('__', $request->get('psn'));
-		$num = (int)$num;
+//		$num = (int)$num;
 		$page = $doctrine->getRepository(Page::class)->find($pageId);
 		$page->removeFromSlot($slot, $num);
 		$doctrine->getManager()->flush();
@@ -33,10 +33,10 @@ class AjaxController extends AbstractController
 	{
 		$this->checkAccess();
 		list($pageId, $slot, $num) = explode('__', $request->get('psn'));
-		$num = (int)$num;
+
 		$page = $doctrine->getRepository(Page::class)->find($pageId);
 		/** @var $page Page */
-		$page->changeNum($slot, $num, $request->request->getInt('num'));
+		$page->changeNum($slot, $num, $request->request->get('num'));
 		$doctrine->getManager()->flush();
 		return new Response('');
 	}
@@ -79,7 +79,7 @@ class AjaxController extends AbstractController
 			$data = $page->getSlotsOptions()[$slot][$num]['config'];
 		}
 		/** @var AbstractBlockService $service */
-		return [$service->getConfigForm($this->createFormBuilder($data), $pssn, $slot, $num), $page, $service, $slot, (int)$num];
+		return [$service->getConfigForm($this->createFormBuilder($data), $pssn, $slot, $num), $page, $service, $slot, $num];
 	}
 
 	private function checkAccess(){
