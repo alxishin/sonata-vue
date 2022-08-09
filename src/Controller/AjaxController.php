@@ -10,6 +10,9 @@ use SonataVue\Service\AbstractBlockService;
 use SonataVue\Type\MapType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +50,7 @@ class AjaxController extends AbstractController
 		$this->checkAccess();
 		list($form, $page, $service, $slot, $num) = $this->parsePssnString($request->get('pssn'));
 		if($request->isMethod(Request::METHOD_POST)){
-			$form = $service->getConfigForm($this->createFormBuilder(), $request->get('pssn'), $slot, $num);
+			$form = $service->getConfigForm($this->getFormConfigBuilder(null, $slot, $num), $request->get('pssn'), $slot, $num);
 			$form->handleRequest($request);
 			if($form->isValid()){
 				$data = $form->getData();
@@ -79,14 +82,18 @@ class AjaxController extends AbstractController
 			$data = $page->getSlotsOptions()[$slot][$num]['config'];
 		}
 		/** @var AbstractBlockService $service */
-		return [$service->getConfigForm($this->createFormBuilder($data), $pssn, $slot, $num), $page, $service, $slot, $num];
+		return [$service->getConfigForm($this->getFormConfigBuilder($data, $slot, $num), $pssn, $slot, $num), $page, $service, $slot, $num];
 	}
 
 	private function checkAccess(){
 		$this->denyAccessUnlessGranted($this->getParameter('sonata_vue.role_for_ajax_request'));
 	}
 
-	public function __construct(private readonly ManagerRegistry $doctrine, private readonly MapType $mapType)
+	private function getFormConfigBuilder($data, string $slot, string $num):FormBuilderInterface{
+		return $this->formFactory->createNamedBuilder($slot.'_'.$num, FormType::class, $data);
+	}
+
+	public function __construct(private readonly ManagerRegistry $doctrine, private readonly MapType $mapType, private FormFactoryInterface $formFactory)
 	{
 
 	}
