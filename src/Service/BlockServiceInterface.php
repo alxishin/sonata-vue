@@ -2,7 +2,7 @@
 
 namespace SonataVue\Service;
 
-interface BlockInterface
+interface BlockServiceInterface
 {
 	public function buildData(array $options, ?array $routeParams);
 }

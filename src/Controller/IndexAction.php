@@ -7,7 +7,7 @@ namespace SonataVue\Controller;
 use Doctrine\Persistence\ManagerRegistry;
 use SonataVue\Entity\Page;
 use SonataVue\Exception\PageNotFoundException;
-use SonataVue\Service\BlockInterface;
+use SonataVue\Service\BlockServiceInterface;
 use SonataVue\Service\PageService;
 use SonataVue\Type\MapType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

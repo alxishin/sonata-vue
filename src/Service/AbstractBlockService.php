@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class AbstractBlockService implements BlockInterface
+abstract class AbstractBlockService implements BlockServiceInterface
 {
 	protected array $options = [];
 

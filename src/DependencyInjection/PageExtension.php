@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SonataVue\DependencyInjection;
 
 
-use SonataVue\Service\BlockInterface;
+use SonataVue\Service\BlockServiceInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -33,7 +33,7 @@ class PageExtension extends Extension
 //		dd($configs);
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('service.yml');
-		$container->registerForAutoconfiguration(BlockInterface::class)
+		$container->registerForAutoconfiguration(BlockServiceInterface::class)
 			->addTag('page.block_service')
 		;
 	}
