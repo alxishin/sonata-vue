@@ -4,7 +4,7 @@ services:
     autoconfigure: true
   SonataVue\Admin\PageAdmin:
     tags:
-      - { name: sonata.admin, model_class: SonataVue\Entity\Page, controller: ~, manager_type: orm, group: admin, label: Page }
+      - { name: sonata.admin, model_class: SonataVue\Entity\Page, controller: SonataVue\Controller\PageAdminController, manager_type: orm, group: admin, label: Page }
   SonataVue\Admin\PageTemplateAdmin:
     tags:
       - { name: sonata.admin, model_class: SonataVue\Entity\PageTemplate, controller: ~, manager_type: orm, group: admin, label: PageTemplate }

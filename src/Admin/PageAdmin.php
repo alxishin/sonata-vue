@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SonataVue\Admin;
 
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use SonataVue\Entity\Page;
 use SonataVue\Type\MapType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -74,4 +75,19 @@ final class PageAdmin extends AbstractAdmin
             ->add('updatedAt')
             ;
     }
+
+	protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+	{
+		$buttonList['refreshRoutes'] = [
+			'template'=>'@SonataVue/Admin/Buttons/refreshRoutes.html.twig'
+		];
+
+		return $buttonList;
+	}
+
+	protected function configureRoutes(RouteCollectionInterface $collection): void
+	{
+		$collection
+			->add('refreshRoutes');
+	}
 }

@@ -10,6 +10,7 @@ use SonataVue\Type\MapType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PageService
 {
@@ -18,6 +19,11 @@ class PageService
 	}
 
 	public function renderPage(Page $page){
+
+		if(!$page->isPublished()){
+			throw new NotFoundHttpException();
+		}
+
 		$result = [];
 		foreach ($page->getSlotsOptions() ?? [] as $slot=>$configs){
 			foreach ($configs as $num=>$config){
