@@ -31,7 +31,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
 		if(!$event->isMainRequest()){
 			return;
 		}
-		//Если страницы для эксепшена нет, он будет выброшен снова
-		$event->setResponse($this->pageService->renderPageForException($event->getThrowable()));
+		$response = $this->pageService->renderPageForException($event->getThrowable());
+		if($response){
+			$event->setResponse($response);
+		}
 	}
 }

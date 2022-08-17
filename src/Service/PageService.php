@@ -44,12 +44,12 @@ class PageService
 		}
 	}
 
-	public function renderPageForException(\Throwable $exception){
+	public function renderPageForException(\Throwable $exception):?Response{
 		$page = $this->doctrine->getRepository(Page::class)->findOneBy(['path'=>'#exception_'.$exception::class,'published'=>true]);
 		if(!$page){
-			throw $exception;
+			return null;
 		}
 
-		return $this->renderPage($page);
+		return $this->renderPage($page, $response);
 	}
 }
