@@ -141,7 +141,7 @@
     </div>
     <div class="panel-body collapse in" id="slot-config-{{ slot }}-{{ num }}-body" aria-expanded="true">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label required">Service</label>
                     <div class="sonata-ba-field">
@@ -155,7 +155,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" id="{{ slot }}-config-container-{{ num }}">
+        </div>
+        <div class="row">    
+            <div class="col-md-12" id="{{ slot }}-config-container-{{ num }}">
                 {% if pssn %}
                     {{ render(controller('SonataVue\\Controller\\AjaxController::renderConfigFormFromPssn',{'pssn':pssn})) }}
                 {% endif %}
