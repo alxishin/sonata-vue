@@ -18,4 +18,9 @@ class TextBlockService extends AbstractBlockService
 		return $options['text'];
 	}
 
+	public function getLabel(): string
+	{
+		return 'Text block';
+	}
+
 }

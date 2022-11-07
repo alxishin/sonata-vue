@@ -4,13 +4,13 @@ services:
     autoconfigure: true
   SonataVue\Admin\PageAdmin:
     tags:
-      - { name: sonata.admin, model_class: SonataVue\Entity\Page, controller: SonataVue\Controller\PageAdminController, manager_type: orm, group: admin, label: Page }
+      - { name: sonata.admin, model_class: SonataVue\Entity\Page, controller: SonataVue\Controller\PageAdminController, manager_type: orm, group: SonataVue, label: Page }
   SonataVue\Admin\PageTemplateAdmin:
     tags:
-      - { name: sonata.admin, model_class: SonataVue\Entity\PageTemplate, controller: ~, manager_type: orm, group: admin, label: PageTemplate }
+      - { name: sonata.admin, model_class: SonataVue\Entity\PageTemplate, controller: ~, manager_type: orm, group: SonataVue, label: PageTemplate }
   SonataVue\Admin\SiteAdmin:
     tags:
-      - { name: sonata.admin, model_class: SonataVue\Entity\Site, controller: ~, manager_type: orm, group: admin, label: Site }
+      - { name: sonata.admin, model_class: SonataVue\Entity\Site, controller: ~, manager_type: orm, group: SonataVue, label: Site }
   SonataVue\Type\MapType:
     arguments:
       - !tagged_iterator sonata_vue.block_service

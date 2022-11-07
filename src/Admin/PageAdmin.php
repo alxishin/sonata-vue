@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SonataVue\Admin;
 
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use SonataVue\Entity\Page;
 use SonataVue\Type\MapType;
@@ -34,7 +35,7 @@ final class PageAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('path')
+            ->add('path', FieldDescriptionInterface::TYPE_URL)
 			->add('published',null,['editable'=>true])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [

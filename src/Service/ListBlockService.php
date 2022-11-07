@@ -17,4 +17,9 @@ class ListBlockService extends AbstractBlockService
 	{
 		return $options['list'];
 	}
+
+	public function getLabel(): string
+	{
+		return 'List block';
+	}
 }

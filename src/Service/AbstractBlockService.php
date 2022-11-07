@@ -21,6 +21,11 @@ abstract class AbstractBlockService implements BlockServiceInterface
 		return static::class;
 	}
 
+	public function getLabel(): string
+	{
+		return $this->__toString();
+	}
+
 	protected function getFieldsForConfigForm(){
 		return [];
 	}

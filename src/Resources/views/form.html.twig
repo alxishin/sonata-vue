@@ -149,7 +149,7 @@
                             <option value=""></option>
                             {% set pssn = null %}
                             {% for service in services %}
-                                <option {% if service==config.service %}{% set pssn = page.id ~'__'~ slot~ '__'~ service~'__' ~ num %}selected="selected" {% endif %}value="{{ page.id }}__{{ slot }}__{{ service }}__{{ num }}">{{ service }}</option>
+                                <option {% if service==config.service %}{% set pssn = page.id ~'__'~ slot~ '__'~ service~'__' ~ num %}selected="selected" {% endif %}value="{{ page.id }}__{{ slot }}__{{ service }}__{{ num }}">{{ service.label }}</option>
                             {% endfor %}
                         </select>
                     </div>
