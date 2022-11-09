@@ -19,8 +19,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PageAdmin extends AbstractAdmin
 {
+	public function __construct(public readonly string $routePrefix)
+	{
 
-    protected function configureDatagridFilters(DatagridMapper $filter): void
+	}
+
+
+	protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('path')
@@ -35,7 +40,7 @@ final class PageAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('path', FieldDescriptionInterface::TYPE_URL)
+            ->add('path', null,['template'=>'@SonataVue\Admin\fields\path.html.twig'])
 			->add('published',null,['editable'=>true])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [

@@ -1,0 +1,5 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    <a href="{{ admin.routePrefix }}{{ value }}" target="_blank">{{ admin.routePrefix }}{{ value }}</a>
+{% endblock %}

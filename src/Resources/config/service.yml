@@ -3,6 +3,8 @@ services:
     autowire: true
     autoconfigure: true
   SonataVue\Admin\PageAdmin:
+    arguments:
+      $routePrefix: '%sonata_vue.route_prefix%'
     tags:
       - { name: sonata.admin, model_class: SonataVue\Entity\Page, controller: SonataVue\Controller\PageAdminController, manager_type: orm, group: SonataVue, label: Page }
   SonataVue\Admin\PageTemplateAdmin:
